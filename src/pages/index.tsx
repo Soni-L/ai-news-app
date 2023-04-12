@@ -1,24 +1,23 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import Head from "next/head";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [articles, setArticles] = useState([])
+  const [articles, setArticles] = useState([]);
 
   const fetchNewsArticles = async () => {
     try {
       const response = await fetch("http://127.0.0.1:4000/news");
       const jsonData = await response.json();
-      setArticles(jsonData);
+      setArticles(jsonData?.articles);
+    } catch (e) {
+      console.log(e);
     }
-    catch (e) {
-      console.log(e)
-    }
-  }
+  };
 
   useEffect(() => {
-    fetchNewsArticles()
-  }, [])
+    fetchNewsArticles();
+  }, []);
 
   return (
     <>
@@ -29,8 +28,14 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div>{articles.map((article: any) => <div key={article.id} style={{ margin: '5px' }}><p>{article?.summary}</p></div>)}</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          {articles?.map((article: any) => (
+            <div style={{ padding: '10px', boxShadow: '1px 1px', borderRadius: '8px' }}>
+              <h3 key={article?.publishedAt}>{article?.title}</h3>
+            </div>
+          ))}
+        </div>
       </main>
     </>
-  )
+  );
 }
