@@ -48,11 +48,12 @@ export default function Home() {
                 backgroundColor: "white",
               }}
             >
-              <h3 key={article?.publishedAt} style={{padding: '10px 0'}}>{article?.title}</h3>
-              {article.urlToImage && (
+              <h3 key={article?.publishedAt} style={{ padding: '10px 0' }}>{article?.title}</h3>
+              {article.image && (
                 <img
-                  src={article.urlToImage}
+                  src={article.image}
                   alt="article image"
+                  onError={(event) => event.target.style.display = 'none'}
                   height={150}
                 />
               )}
