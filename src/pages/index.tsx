@@ -4,16 +4,16 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [articles, setArticles] = useState([]);
-  const [tags, setTags] = useLocalStorageStringArray('tags');
+  const [tags, setTags] = useLocalStorageStringArray("tags");
 
   const fetchNewsArticles = async () => {
-    // try {
-    //   const response = await fetch("http://127.0.0.1:4000/news");
-    //   const jsonData = await response.json();
-    //   setArticles(jsonData?.articles);
-    // } catch (e) {
-    //   console.log(e);
-    // }
+    try {
+      const response = await fetch("http://127.0.0.1:4000/news");
+      const jsonData = await response.json();
+      setArticles(jsonData?.articles);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
@@ -29,10 +29,33 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "25px",
+            backgroundColor: "#F0EAD6",
+            padding: "10px",
+          }}
+        >
           {articles?.map((article: any) => (
-            <div style={{ padding: '10px', boxShadow: '1px 1px', borderRadius: '8px' }}>
-              <h3 key={article?.publishedAt}>{article?.title}</h3>
+            <div
+              style={{
+                padding: "10px",
+                boxShadow: "2px 2px",
+                borderRadius: "8px",
+                width: "max(400px, 40vw)",
+                backgroundColor: "white",
+              }}
+            >
+              <h3 key={article?.publishedAt} style={{padding: '10px 0'}}>{article?.title}</h3>
+              {article.urlToImage && (
+                <img
+                  src={article.urlToImage}
+                  alt="article image"
+                  height={150}
+                />
+              )}
             </div>
           ))}
         </div>
