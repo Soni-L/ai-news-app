@@ -38,27 +38,40 @@ export default function Home() {
             padding: "10px",
           }}
         >
-          {articles?.map((article: any) => (
-            <div
-              style={{
-                padding: "10px",
-                boxShadow: "2px 2px",
-                borderRadius: "8px",
-                width: "max(400px, 40vw)",
-                backgroundColor: "white",
-              }}
-            >
-              <h3 key={article?.publishedAt} style={{ padding: '10px 0' }}>{article?.title}</h3>
-              {article.image && (
-                <img
-                  src={article.image}
-                  alt="article image"
-                  onError={(event) => event.target.style.display = 'none'}
-                  height={150}
-                />
-              )}
-            </div>
-          ))}
+          {articles
+            ?.filter(
+              (article) =>
+                article?.ai_summary?.length > 0 &&
+                article?.ai_summary[article.ai_summary?.length - 1] === "."
+            )
+            ?.map((article: any) => (
+              <div
+                style={{
+                  padding: "10px",
+                  boxShadow: "2px 2px",
+                  borderRadius: "8px",
+                  width: "max(400px, 40vw)",
+                  backgroundColor: "white",
+                }}
+              >
+                {/* <h3
+                  key={article?.publishedAt}
+                  style={{ padding: "10px 0", color: "blue" }}
+                >
+                  {article?.title}
+                </h3> */}
+                <h4 style={{ padding: "10px 0", lineHeight: '25px'}}>{article?.ai_summary}</h4>
+                {article.image && (
+                  <img
+                    src={article.image}
+                    alt="article image"
+                    style={{ display: "none" }}
+                    onLoad={(event) => (event.target.style.display = "block")}
+                    height={150}
+                  />
+                )}
+              </div>
+            ))}
         </div>
       </main>
     </>
