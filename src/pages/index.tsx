@@ -1,6 +1,4 @@
 import Head from "next/head";
-import useLocalStorageStringArray from "@/hooks/useLocalStorageStringArray";
-import { useEffect, useState } from "react";
 import prisma from "../../prisma/client";
 
 export default function Home({ articles }) {
