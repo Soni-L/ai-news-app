@@ -1,24 +1,9 @@
 import Head from "next/head";
 import useLocalStorageStringArray from "@/hooks/useLocalStorageStringArray";
 import { useEffect, useState } from "react";
+import prisma from "../../prisma/client";
 
-export default function Home() {
-  const [articles, setArticles] = useState([]);
-  const [tags, setTags] = useLocalStorageStringArray("tags");
-
-  const fetchNewsArticles = async () => {
-    try {
-      const response = await fetch("http://127.0.0.1:4000/news");
-      const jsonData = await response.json();
-      setArticles(jsonData?.articles);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  useEffect(() => {
-    fetchNewsArticles();
-  }, []);
+export default function Home({ articles }) {
 
   return (
     <>
@@ -46,6 +31,7 @@ export default function Home() {
             )
             ?.map((article: any) => (
               <div
+                key={article._id}
                 style={{
                   padding: "10px",
                   boxShadow: "2px 2px",
@@ -60,7 +46,7 @@ export default function Home() {
                 >
                   {article?.title}
                 </h3> */}
-                <h4 style={{ padding: "10px 0", lineHeight: '25px'}}>{article?.ai_summary}</h4>
+                <h4 style={{ padding: "10px 0", lineHeight: '25px' }}>{article?.ai_summary}</h4>
                 {article.image && (
                   <img
                     src={article.image}
@@ -76,4 +62,12 @@ export default function Home() {
       </main>
     </>
   );
+}
+
+
+export async function getServerSideProps() {
+  const articles = await prisma.newsarticles.findMany({})
+  return {
+    props: { articles },
+  }
 }
